@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="th" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title is set literally as requested by the user and guidelines -->
+    <title>ระบบคลังสื่อ โรงเรียนเกล็ดลิ้นวิทยา</title>
+    
+    <!-- Google Fonts for excellent typography pairing: Inter (sans-serif) and Sarabun (Thai font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+
+    <!-- Header Section (ส่วนหัวโรงเรียนเกล็ดลิ้นวิทยา) -->
+    <header class="school-header py-5 mb-4 shadow-sm">
+      <div class="container text-center text-md-start">
+        <div class="row align-items-center justify-content-between g-4">
+          <div class="col-md-auto d-flex flex-column flex-md-row align-items-center gap-3">
+            <!-- School logo placeholder (Minimalist vector-based design) -->
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 72px; height: 72px;">
+              <i class="bi bi-mortarboard-fill fs-1"></i>
+            </div>
+            <div>
+              <h1 class="h2 fw-bold mb-1" id="school-title">ระบบคลังสื่อ โรงเรียนเกล็ดลิ้นวิทยา</h1>
+              <p class="lead mb-0 fs-6 opacity-90">แหล่งรวบรวม ค้นหา และเข้าถึงสื่อการเรียนการสอนที่มีประสิทธิภาพสำหรับครูและนักเรียน</p>
+            </div>
+          </div>
+          <div class="col-md-auto d-flex flex-wrap justify-content-center align-items-center gap-2">
+            <!-- Authentication Header Button Container -->
+            <div id="auth-header-container">
+              <button class="btn btn-outline-light d-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm" id="btn-show-auth-modal">
+                <i class="bi bi-person-circle"></i>
+                <span>เข้าสู่ระบบคุณครู</span>
+              </button>
+            </div>
+            <!-- Dark Mode Toggle Button -->
+            <button class="btn btn-outline-light d-flex align-items-center gap-2 px-3 py-2 rounded-pill shadow-sm" id="dark-mode-toggle" title="สลับธีม สว่าง/มืด">
+              <i class="bi bi-moon-stars-fill" id="dark-mode-icon"></i>
+              <span id="dark-mode-text">โหมดกลางคืน</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mb-5">
+      
+      <!-- Nav View Tabs (Only visible when user is authenticated as Teacher/Admin) -->
+      <div class="d-none mb-4 animate-fade-in" id="main-view-switcher">
+        <ul class="nav nav-pills nav-fill bg-body p-2 rounded-4 shadow-sm border">
+          <li class="nav-item">
+            <button class="nav-link active rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" id="tab-library-view">
+              <i class="bi bi-grid-fill"></i> คลังสื่อการสอนหลัก
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link rounded-3 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" id="tab-admin-view">
+              <i class="bi bi-shield-lock-fill text-danger"></i> แผงจัดการระบบ Admin
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Library View (ประกอบด้วย Form และ Grid) -->
+      <div id="library-view-container" class="animate-fade-in">
+        <!-- Stats Dashboard Widgets (Extra Feature: Overview Counters) -->
+        <section class="row g-3 mb-4 text-center">
+          <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-body">
+              <div class="d-flex align-items-center gap-3">
+                <div class="stat-circle bg-primary text-white">
+                  <i class="bi bi-files"></i>
+                </div>
+                <div class="text-start">
+                  <h6 class="text-muted mb-0 small">สื่อทั้งหมด</h6>
+                  <h3 class="fw-bold mb-0" id="stat-total">0</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-body">
+              <div class="d-flex align-items-center gap-3">
+                <div class="stat-circle bg-danger text-white">
+                  <i class="bi bi-play-btn-fill"></i>
+                </div>
+                <div class="text-start">
+                  <h6 class="text-muted mb-0 small">วิดีโอ & พาวเวอร์พอยต์</h6>
+                  <h3 class="fw-bold mb-0" id="stat-video-ppt">0</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-body">
+              <div class="d-flex align-items-center gap-3">
+                <div class="stat-circle bg-warning text-dark">
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                </div>
+                <div class="text-start">
+                  <h6 class="text-muted mb-0 small">ไดรฟ์ & เว็บไซต์</h6>
+                  <h3 class="fw-bold mb-0" id="stat-cloud">0</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-body">
+              <div class="d-flex align-items-center gap-3">
+                <div class="stat-circle bg-purple text-white" style="background-color: #6f42c1;">
+                  <i class="bi bi-cpu-fill"></i>
+                </div>
+                <div class="text-start">
+                  <h6 class="text-muted mb-0 small">AI Prompts & เอกสาร</h6>
+                  <h3 class="fw-bold mb-0" id="stat-ai-docs">0</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="row g-4">
+          
+          <!-- Left Side: Media Form (ส่วนเพิ่มข้อมูลสื่อ) -->
+          <section class="col-lg-4" id="media-form-section">
+            
+            <!-- A. Guest/Visitor Promotion Card -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 text-center bg-body mb-4 animate-fade-in" id="media-guest-promo">
+              <div class="py-4">
+                <i class="bi bi-shield-lock-fill text-primary fs-1 mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">ระบบจัดการเฉพาะคุณครู</h5>
+                <p class="text-muted small px-2">คุณครูโรงเรียนเกล็ดลิ้นวิทยา สามารถเข้าสู่ระบบเพื่ออัปโหลด แก้ไข หรือจัดการคลังสื่อการสอนของท่านได้ทันที</p>
+                <button class="btn btn-primary rounded-pill px-4 py-2 mt-2 w-100 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2" id="btn-promo-login">
+                  <i class="bi bi-box-arrow-in-right"></i>
+                  <span>เข้าสู่ระบบคุณครู</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- B. Teacher Form Card (Initially Hidden, Shown only when Authenticated) -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top bg-body d-none" id="media-teacher-form-card" style="top: 24px; z-index: 100;">
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                <h5 class="fw-bold mb-0 text-primary" id="form-card-title">
+                  <i class="bi bi-plus-circle-fill me-2"></i>เพิ่มข้อมูลสื่อใหม่
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary d-none" id="btn-cancel-edit" title="ยกเลิกการแก้ไข">
+                  <i class="bi bi-x-circle me-1"></i>ยกเลิก
+                </button>
+              </div>
+              
+              <form id="media-form" novalidate>
+                <!-- Hidden input for edit mode -->
+                <input type="hidden" id="media-id" value="" />
+                
+                <!-- Title -->
+                <div class="mb-3">
+                  <label for="media-title" class="form-label fw-semibold small">ชื่อสื่อการเรียนการสอน <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text"><i class="bi bi-journal-text"></i></span>
+                    <input type="text" class="form-control" id="media-title" placeholder="เช่น สรุปสูตรตรีโกณมิติ ม.5" required />
+                  </div>
+                </div>
+
+                <!-- Subject & Category Grid -->
+                <div class="row g-2 mb-3">
+                  <!-- Subject (รายวิชา) -->
+                  <div class="col-6">
+                    <label for="media-subject" class="form-label fw-semibold small">รายวิชา <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-sm" id="media-subject" required>
+                      <option value="" disabled selected>เลือกวิชา...</option>
+                      <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+                      <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
+                      <option value="ภาษาไทย">ภาษาไทย</option>
+                      <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+                      <option value="สังคมศึกษา ศาสนา และวัฒนธรรม">สังคมศึกษาฯ</option>
+                      <option value="สุขศึกษาและพลศึกษา">สุขศึกษาและพลศึกษา</option>
+                      <option value="ศิลปะ (ดนตรี/นาฏศิลป์)">ศิลปะ/ดนตรี</option>
+                      <option value="การงานอาชีพ">การงานอาชีพ</option>
+                      <option value="กิจกรรมแนะแนว/กิจกรรมพัฒนาผู้เรียน">กิจกรรมแนะแนวฯ</option>
+                      <option value="อื่น ๆ">รายวิชาอื่น ๆ</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Category (ประเภทสื่อ) -->
+                  <div class="col-6">
+                    <label for="media-category" class="form-label fw-semibold small">ประเภทสื่อ <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-sm" id="media-category" required>
+                      <option value="" disabled selected>เลือกประเภท...</option>
+                      <option value="เอกสาร">เอกสาร (PDF/Word)</option>
+                      <option value="วิดีโอ">วิดีโอ (MP4/YouTube)</option>
+                      <option value="PowerPoint">PowerPoint (.pptx)</option>
+                      <option value="Google Drive">Google Drive</option>
+                      <option value="เว็บไซต์">เว็บไซต์/ลิงก์ภายนอก</option>
+                      <option value="AI Prompt">AI Prompt</option>
+                      <option value="อื่น ๆ">ประเภทอื่น ๆ</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Grade & Author Grid -->
+                <div class="row g-2 mb-3">
+                  <!-- Grade (ระดับชั้น) -->
+                  <div class="col-6">
+                    <label for="media-grade" class="form-label fw-semibold small">ระดับชั้น <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-sm" id="media-grade" required>
+                      <option value="" disabled selected>เลือกระดับชั้น...</option>
+                      <option value="ม.1">มัธยมศึกษาปีที่ 1 (ม.1)</option>
+                      <option value="ม.2">มัธยมศึกษาปีที่ 2 (ม.2)</option>
+                      <option value="ม.3">มัธยมศึกษาปีที่ 3 (ม.3)</option>
+                      <option value="ม.4">มัธยมศึกษาปีที่ 4 (ม.4)</option>
+                      <option value="ม.5">มัธยมศึกษาปีที่ 5 (ม.5)</option>
+                      <option value="ม.6">มัธยมศึกษาปีที่ 6 (ม.6)</option>
+                      <option value="ทุกระดับชั้น">ทุกระดับชั้น (ม.1-ม.6)</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Author (ผู้จัดทำ) -->
+                  <div class="col-6">
+                    <label for="media-author" class="form-label fw-semibold small">ชื่อผู้จัดทำ/คุณครู <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                      <input type="text" class="form-control" id="media-author" placeholder="เช่น ครูสมชาย ใจดี" required />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Media Link or URL -->
+                <div class="mb-3">
+                  <label for="media-url" class="form-label fw-semibold small">URL หรือ ลิงก์เชื่อมโยงสื่อ <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                    <input type="url" class="form-control" id="media-url" placeholder="https://drive.google.com/... หรือ ลิงก์อื่น ๆ" required />
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                  <label for="media-description" class="form-label fw-semibold small">คำอธิบายเพิ่มเติม/รายละเอียด</label>
+                  <textarea class="form-control form-control-sm" id="media-description" rows="2" placeholder="อธิบายเนื้อหา ตัวอย่าง หรือวิธีกิจกรรม..."></textarea>
+                </div>
+
+                <!-- Cover Image Upload & Drag Drop (Usability guideline) -->
+                <div class="mb-4">
+                  <label class="form-label fw-semibold small">รูปหน้าปกสื่อ (ลากมาวาง หรือ เลือกไฟล์)</label>
+                  <div class="image-preview-box" id="drop-zone">
+                    <input type="file" class="d-none" id="media-image-file" accept="image/*" />
+                    <div class="text-center p-3" id="preview-placeholder">
+                      <i class="bi bi-cloud-arrow-up fs-2 text-muted mb-2"></i>
+                      <p class="mb-1 small fw-medium">ลากไฟล์รูปภาพมาวางที่นี่</p>
+                      <p class="text-muted xsmall mb-0" style="font-size: 0.75rem;">หรือคลิกเพื่อเลือกจากเครื่องของคุณ</p>
+                    </div>
+                    <div class="position-relative w-100 h-100 d-none" id="preview-container">
+                      <img src="" id="image-preview" class="img-fluid" alt="Preview Image" />
+                      <button type="button" class="btn btn-danger btn-sm position-absolute" id="btn-remove-image" style="top: 8px; right: 8px;" title="ลบรูป">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Hidden input for holding remote URL if editing or preset -->
+                  <input type="hidden" id="media-image-url" value="" />
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2" id="btn-submit">
+                  <i class="bi bi-save-fill"></i>
+                  <span id="submit-btn-text">บันทึกข้อมูลสื่อ</span>
+                  <span class="spinner-border spinner-border-sm d-none" id="submit-spinner" role="status" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+          </section>
+
+        <!-- Right Side: Search and Media Cards Gallery (ส่วนค้นหาและแสดงคลังสื่อ) -->
+        <section class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-body">
+            
+            <!-- Filters & Search Form -->
+            <div class="row g-2 mb-4">
+              <!-- Search Bar -->
+              <div class="col-12 col-md-6">
+                <div class="input-group shadow-sm rounded-pill overflow-hidden border">
+                  <span class="input-group-text border-0 bg-body text-muted"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control border-0 bg-body py-2" id="search-keyword" placeholder="ค้นหาด้วย ชื่อสื่อ, วิชา, ผู้จัดทำ หรือประเภท..." />
+                  <button class="btn btn-outline-secondary border-0 bg-body text-muted d-none" type="button" id="btn-clear-search"><i class="bi bi-x-circle-fill"></i></button>
+                </div>
+              </div>
+
+              <!-- Filter Subject -->
+              <div class="col-6 col-md-3">
+                <select class="form-select shadow-sm py-2 rounded-pill border" id="filter-subject">
+                  <option value="">ทุกรายวิชา</option>
+                  <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+                  <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์ฯ</option>
+                  <option value="ภาษาไทย">ภาษาไทย</option>
+                  <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+                  <option value="สังคมศึกษา ศาสนา และวัฒนธรรม">สังคมศึกษาฯ</option>
+                  <option value="สุขศึกษาและพลศึกษา">สุขศึกษาและพลฯ</option>
+                  <option value="ศิลปะ (ดนตรี/นาฏศิลป์)">ศิลปะ/ดนตรี</option>
+                  <option value="การงานอาชีพ">การงานอาชีพ</option>
+                  <option value="กิจกรรมแนะแนว/กิจกรรมพัฒนาผู้เรียน">กิจกรรมแนะแนวฯ</option>
+                  <option value="อื่น ๆ">วิชาอื่น ๆ</option>
+                </select>
+              </div>
+
+              <!-- Filter Grade -->
+              <div class="col-6 col-md-3">
+                <select class="form-select shadow-sm py-2 rounded-pill border" id="filter-grade">
+                  <option value="">ทุกระดับชั้น</option>
+                  <option value="ม.1">ม.1</option>
+                  <option value="ม.2">ม.2</option>
+                  <option value="ม.3">ม.3</option>
+                  <option value="ม.4">ม.4</option>
+                  <option value="ม.5">ม.5</option>
+                  <option value="ม.6">ม.6</option>
+                  <option value="ทุกระดับชั้น">ทุกระดับชั้น</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-4 align-items-center justify-content-between">
+              <!-- Filter Type Buttons / Badges (Sub-filters) -->
+              <div class="col-12 col-md-auto d-flex flex-wrap gap-1 align-items-center">
+                <span class="text-muted small me-2"><i class="bi bi-funnel-fill text-secondary"></i> ประเภท:</span>
+                <button class="btn btn-sm btn-dark rounded-pill px-3 py-1 btn-category-filter active" data-category="">ทั้งหมด</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="เอกสาร">เอกสาร</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="วิดีโอ">วิดีโอ</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="PowerPoint">PowerPoint</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="Google Drive">Drive</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="เว็บไซต์">เว็บไซต์</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="AI Prompt">AI Prompt</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 btn-category-filter" data-category="อื่น ๆ">อื่น ๆ</button>
+              </div>
+
+              <!-- Sorting & Layout Control -->
+              <div class="col-12 col-md-auto d-flex align-items-center gap-2 mt-2 mt-md-0">
+                <span class="text-muted small text-nowrap"><i class="bi bi-sort-down"></i> เรียงตาม:</span>
+                <select class="form-select form-select-sm rounded-3 shadow-sm border" id="sort-order" style="width: 140px;">
+                  <option value="newest" selected>ใหม่ล่าสุด</option>
+                  <option value="oldest">เก่าที่สุด</option>
+                  <option value="title-asc">ชื่อสื่อ A-Z</option>
+                  <option value="title-desc">ชื่อสื่อ Z-A</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Loading Spinner Section -->
+            <div id="loading-spinner" class="text-center py-5">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">กำลังโหลดข้อมูล...</span>
+              </div>
+              <p class="text-muted mt-3 mb-0">กำลังดึงข้อมูลสื่อการเรียนการสอนแบบ Real-time...</p>
+            </div>
+
+            <!-- Empty State Section -->
+            <div id="empty-state" class="text-center py-5 d-none">
+              <i class="bi bi-folder-symlink fs-1 text-muted mb-3 d-block"></i>
+              <h5 class="fw-bold mb-1">ไม่พบสื่อการสอน</h5>
+              <p class="text-muted small">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหาของคุณ ลองเปลี่ยนตัวกรองหรือเพิ่มข้อมูลสื่อใหม่</p>
+              <button class="btn btn-sm btn-primary rounded-pill px-3" id="btn-clear-all-filters">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>รีเซ็ตตัวกรองทั้งหมด
+              </button>
+            </div>
+
+            <!-- Media Grid Cards Gallery (Google Drive / Material Design Style) -->
+            <div class="media-grid" id="media-container">
+              <!-- Dynamically populated via app.js -->
+            </div>
+
+            <!-- Pagination (Extra Feature) -->
+            <nav class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top d-none" id="pagination-nav">
+              <span class="text-muted small" id="pagination-info">แสดง 1 ถึง 12 จากทั้งหมด 12 รายการ</span>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled" id="page-prev">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i class="bi bi-chevron-left"></i> ย้อนกลับ</a>
+                </li>
+                <!-- Dynamic pages will be injected here -->
+                <li class="page-item" id="page-next">
+                  <a class="page-link" href="#">ถัดไป <i class="bi bi-chevron-right"></i></a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+        </section>
+      </div>
+
+      <!-- Admin Panel View Container (Only shown when Admin Tab is active) -->
+      <div id="admin-panel-section" class="d-none animate-fade-in">
+        <div class="row g-4">
+          <!-- Admin Left Column: Teacher Account Info & Actions -->
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-body mb-4">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom text-primary">
+                <i class="bi bi-person-badge-fill me-2"></i>ข้อมูลบัญชีผู้ใช้ครู
+              </h5>
+              <div class="mb-3">
+                <label class="form-label fw-semibold small text-muted mb-1">อีเมลผู้ใช้</label>
+                <div class="fw-bold fs-6 text-truncate" id="admin-user-email">loading...</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold small text-muted mb-1">สถานะสิทธิ์</label>
+                <div>
+                  <span class="badge bg-danger rounded-pill px-3 py-1 fw-bold">Admin / คณะครูเกล็ดลิ้นวิทยา</span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold small text-muted mb-1">UID บัญชี</label>
+                <div class="text-muted xsmall font-monospace text-truncate" id="admin-user-uid" style="font-size: 0.75rem;">-</div>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <!-- Trigger Reset Password Email -->
+                <button class="btn btn-outline-primary btn-sm rounded-pill py-2" id="btn-admin-reset-pwd">
+                  <i class="bi bi-key-fill me-1"></i>รีเซ็ตรหัสผ่านของฉัน
+                </button>
+                <button class="btn btn-danger btn-sm rounded-pill py-2" id="btn-admin-logout">
+                  <i class="bi bi-box-arrow-left me-1"></i>ออกจากระบบ
+                </button>
+              </div>
+            </div>
+
+            <!-- School Admin Info Stats -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-body">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom text-success">
+                <i class="bi bi-shield-check me-2"></i>คู่มือผู้ดูแลระบบ (Admin)
+              </h5>
+              <ul class="list-unstyled small mb-0 text-muted" style="line-height: 1.6;">
+                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i><strong>จัดการคลังสื่อหลัก:</strong> คุณสามารถแก้ไข ลบ หรือเพิ่มสื่อใหม่ผ่านทางแท็บหลักได้โดยตรง</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i><strong>ตรวจสอบความถูกต้อง:</strong> ตรวจสอบลิงก์ที่ครูท่านอื่นอัปโหลดในตารางฝั่งขวา</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i><strong>รักษาความปลอดภัย:</strong> โปรดระมัดระวังเมื่อแชร์รหัสผ่านหรือออกจากระบบทุกครั้งหลังการใช้งานคอมพิวเตอร์ส่วนรวม</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Admin Right Column: Fast Datatable System Management -->
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-body">
+              <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom gap-2">
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="bi bi-table me-2"></i>แผงจัดการและควบคุมสื่อทั้งหมดแบบด่วน
+                </h5>
+                <span class="badge bg-secondary rounded-pill" id="admin-total-badge">0 สื่อ</span>
+              </div>
+
+              <!-- Quick Search on Table -->
+              <div class="mb-3">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control" id="admin-search-input" placeholder="ค้นหาตามชื่อสื่อ รายวิชา หรือผู้จัดทำสำหรับ Admin..." />
+                </div>
+              </div>
+
+              <!-- Media Datatable -->
+              <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-hover align-middle table-sm border-0" style="font-size: 0.85rem;">
+                  <thead class="table-light sticky-top" style="z-index: 10;">
+                    <tr>
+                      <th scope="col" style="width: 40%">ชื่อสื่อการเรียนการสอน</th>
+                      <th scope="col">หมวดหมู่</th>
+                      <th scope="col">รายวิชา</th>
+                      <th scope="col">ผู้จัดทำ</th>
+                      <th scope="col" class="text-center" style="width: 15%">การจัดการ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-table-body">
+                    <!-- Loaded dynamically via app.js -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="admin-table-empty" class="text-center py-4 d-none">
+                <i class="bi bi-folder-x fs-1 text-muted mb-2"></i>
+                <p class="text-muted small mb-0">ไม่พบข้อมูลสื่อในระบบที่ตรงกับคำค้นหา</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Authentication Modal (Login / Sign Up / Reset Password) -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+          
+          <!-- Unified Header -->
+          <div class="modal-header bg-primary text-white border-0 py-3">
+            <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="authModalLabel">
+              <i class="bi bi-person-fill-lock"></i>
+              <span>ระบบเข้าสู่ระบบคณะครู</span>
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Tabs to switch between Login and Register -->
+          <div class="bg-light p-2 border-bottom d-flex gap-2">
+            <button class="btn btn-sm btn-white flex-grow-1 rounded-pill shadow-sm border active fw-semibold" id="btn-auth-tab-login">
+              <i class="bi bi-box-arrow-in-right me-1"></i>เข้าสู่ระบบ
+            </button>
+            <button class="btn btn-sm btn-outline-secondary flex-grow-1 rounded-pill fw-semibold" id="btn-auth-tab-register">
+              <i class="bi bi-person-plus-fill me-1"></i>สมัครบัญชีครูใหม่
+            </button>
+          </div>
+
+          <div class="modal-body p-4">
+            <!-- 1. LOGIN FORM CONTAINER -->
+            <form id="auth-login-form" class="animate-fade-in">
+              <div class="mb-3">
+                <label for="login-email" class="form-label fw-semibold small">อีเมลคุณครู <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="login-email" placeholder="name@kledlin.ac.th" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <label for="login-password" class="form-label fw-semibold small">รหัสผ่าน <span class="text-danger">*</span></label>
+                  <a href="#" class="small text-decoration-none text-primary" id="link-forgot-password">ลืมรหัสผ่าน?</a>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="login-password" placeholder="••••••••" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill mt-2 shadow-sm d-flex align-items-center justify-content-center gap-2" id="btn-login-submit">
+                <span>เข้าสู่ระบบ</span>
+                <span class="spinner-border spinner-border-sm d-none" id="login-spinner"></span>
+              </button>
+            </form>
+
+            <!-- 2. REGISTER FORM CONTAINER -->
+            <form id="auth-register-form" class="d-none animate-fade-in">
+              <div class="alert alert-info py-2 px-3 small border-0 mb-3" style="font-size: 0.8rem; border-radius: 12px;">
+                <i class="bi bi-info-circle-fill me-2"></i>สำหรับคณะครูโรงเรียนเกล็ดลิ้นวิทยาเท่านั้น เมื่อสมัครแล้วจะมีสิทธิ์เพิ่มและจัดการสื่อได้ทันที
+              </div>
+              <div class="mb-3">
+                <label for="register-email" class="form-label fw-semibold small">อีเมลโรงเรียน/ทั่วไป <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="register-email" placeholder="teacher@kledlin.ac.th" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="register-password" class="form-label fw-semibold small">รหัสผ่าน <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="register-password" placeholder="อย่างน้อย 6 ตัวอักษร" required minlength="6" />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success w-100 py-2 fw-semibold rounded-pill mt-2 shadow-sm d-flex align-items-center justify-content-center gap-2" id="btn-register-submit">
+                <span>ลงทะเบียนสมัครบัญชี</span>
+                <span class="spinner-border spinner-border-sm d-none" id="register-spinner"></span>
+              </button>
+            </form>
+
+            <!-- 3. RESET PASSWORD FORM CONTAINER -->
+            <form id="auth-reset-form" class="d-none animate-fade-in">
+              <div class="mb-3 text-center">
+                <i class="bi bi-key-fill text-warning fs-1 mb-2"></i>
+                <h6 class="fw-bold">รีเซ็ตรหัสผ่านคุณครู</h6>
+                <p class="text-muted small">ระบุอีเมลบัญชีของคุณเพื่อรับลิงก์สำหรับรีเซ็ตรหัสผ่านเข้าอีเมลโดยตรง</p>
+              </div>
+              <div class="mb-3">
+                <label for="reset-email" class="form-label fw-semibold small">อีเมลบัญชีผู้ใช้ <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="reset-email" placeholder="teacher@kledlin.ac.th" required />
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-light rounded-pill flex-grow-1" id="btn-reset-cancel">ย้อนกลับ</button>
+                <button type="submit" class="btn btn-warning rounded-pill flex-grow-1 fw-semibold d-flex align-items-center justify-content-center gap-2" id="btn-reset-submit">
+                  <span>ส่งลิงก์รีเซ็ต</span>
+                  <span class="spinner-border spinner-border-sm d-none" id="reset-spinner"></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-body py-4 mt-5 border-top">
+      <div class="container text-center text-muted small">
+        <p class="mb-1">© 2026 ระบบคลังสื่อการเรียนการสอน — โรงเรียนเกล็ดลิ้นวิทยา. สงวนลิขสิทธิ์</p>
+        <p class="mb-0 text-muted xsmall" style="font-size: 0.75rem;">พัฒนาด้วยความใส่ใจเพื่อสนับสนุนการเรียนการสอนของคณะครูและบุคลากรทางการศึกษา</p>
+      </div>
+    </footer>
+
+    <!-- Back to top floating button -->
+    <button type="button" class="btn btn-primary btn-top shadow-lg" id="btn-back-to-top" title="ขึ้นไปบนสุด">
+      <i class="bi bi-arrow-up-short fs-4"></i>
+    </button>
+
+    <!-- Modal Confirm Delete (Modal ยืนยันก่อนลบ - Extra Feature) -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center pt-1">
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
+            <h5 class="modal-title fw-bold mb-2" id="deleteModalLabel">ยืนยันการลบข้อมูล?</h5>
+            <p class="text-muted small mb-0">คุณแน่ใจหรือไม่ว่าต้องการลบสื่อ "<span id="delete-media-title" class="fw-semibold"></span>" ? การดำเนินการนี้ไม่สามารถยกเลิกได้</p>
+            <input type="hidden" id="delete-media-id" value="" />
+          </div>
+          <div class="modal-footer border-0 d-flex justify-content-center gap-2 pt-3 pb-4">
+            <button type="button" class="btn btn-sm btn-light px-3 rounded-pill" data-bs-dismiss="modal">ยกเลิก</button>
+            <button type="button" class="btn btn-sm btn-danger px-3 rounded-pill" id="btn-confirm-delete">
+              <span id="confirm-delete-text">ยืนยันการลบ</span>
+              <span class="spinner-border spinner-border-sm d-none" id="delete-spinner" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container (Toast Notification - Extra Feature) -->
+    <div class="toast-container position-fixed bottom-0 start-0 p-3" style="z-index: 1080;">
+      <div id="liveToast" class="toast border-0 shadow-lg rounded-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex align-items-center p-2">
+          <div class="toast-body d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle-fill text-primary" id="toast-icon"></i>
+            <span id="toast-message" class="small fw-medium">ทำรายการสำเร็จ</span>
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Core App Logic (Using modular ES6 imports) -->
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

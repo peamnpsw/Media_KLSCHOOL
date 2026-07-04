@@ -1,0 +1,6 @@
+{
+  "name": "ระบบคลังสื่อ โรงเรียนเกล็ดลิ้นวิทยา",
+  "description": "ระบบคลังสื่อการเรียนการสอนสำหรับครูและนักเรียน โรงเรียนเกล็ดลิ้นวิทยา เพื่อรวบรวม ค้นหา และจัดการสื่ออย่างสะดวก",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
